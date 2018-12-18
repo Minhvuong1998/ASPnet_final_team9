@@ -1,0 +1,45 @@
+﻿@using Interconnected.Models.Entity
+@{
+    List<CATEGORy> ListCategories = (List<CATEGORy>)ViewData["ListCategories"];
+}
+@{
+    Layout = null;
+}
+<div class="span4">
+    <div class="sidebar" style="padding-top:4px;">
+        <div class="widget">
+            <form action="@Url.Action("Index", "Search")" class="form-search">
+                <input type="text" class="input-medium search-query" name="keySearch">
+                <button type="submit" class="btn dark_btn">Tìm kiếm</button>
+            </form>
+        </div>
+        <div class="widget">
+            <h2 class="title"><span>Nội quy</span></h2>
+            <p>Nội quy của forum cần phải đọc trước khi tham gia.</p>
+            <p><a href="@Url.Action("Index", "About")" class="arrow_link">Xem thêm</a></p>
+        </div>
+        <div class="widget">
+            <h2 class="title"><span>Cùng chủ đề</span></h2>
+            <ul class="recent_post">
+                @foreach (POST Item in ViewBag.SamePost)
+                {
+                    <li>
+                        <a href="#"><img src="~/Assets/img/img8.jpg" alt="" /></a>
+                        <div><a href="@Url.Action("DetailPost", "Categories", new { id= Item.ID })">@Item.TITLE</a></div>
+                        @Item.DATE_CREATED
+                        <div class="clear"></div>
+                    </li>
+                }
+            </ul>
+        </div>
+        <div class="widget">
+            <h2 class="title"><span>Chủ đề</span></h2>
+            <ul class="links">
+                @foreach (CATEGORy Item in ListCategories)
+                {
+                    <li><a href="@Url.Action("Index", "Categories", new { id=Item.ID })">@Item.NAME</a></li>
+                }
+            </ul>
+        </div>
+    </div>
+</div>

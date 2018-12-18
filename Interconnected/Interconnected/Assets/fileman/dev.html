@@ -1,0 +1,132 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>DTU</title>
+<link href="css/jquery-ui-1.10.4.custom.min.css" rel="stylesheet" type="text/css" />
+<link href="css/main.css" rel="stylesheet" type="text/css" />
+<script type="text/javascript" src="//ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+<script type="text/javascript" src="js/jquery-ui-1.10.4.custom.min.js"></script>
+<script type="text/javascript" src="js/filetypes.js"></script>
+<script type="text/javascript" src="js/custom.js"></script>
+<script type="text/javascript" src="js/main.js"></script>
+<script type="text/javascript" src="js/utils.js"></script>
+<script type="text/javascript" src="js/file.js"></script>
+<script type="text/javascript" src="js/directory.js"></script>
+<script type="text/javascript" src="js/jquery-dateFormat.min.js"></script>
+<script type="text/javascript">
+</script>
+</head>
+<body>
+<table cellpadding="0" cellspacing="0" id="wraper">
+  <tr>
+   <td valign="top" class="pnlDirs" id="dirActions">
+    <div class="actions">
+        <input type="button" id="btnAddDir" value="Tạo thư mục" title="Tạo thư mục" onclick="addDir()" data-lang-v="CreateDir" data-lang-t="T_CreateDir" />
+        <input type="button" id="btnRenameDir" value="Đổi tên" title="Đổi tên thư mục" onclick="renameDir()" data-lang-v="RenameDir" data-lang-t="T_RenameDir" />
+        <input type="button" id="btnDeleteDir" value="Xóa" title="Xóa thư mục" onclick="deleteDir()" data-lang-v="DeleteDir" data-lang-t="T_DeleteDir" />
+    </div>
+    <div id="pnlLoadingDirs">
+       <span>Đang duyệt thư mục...</span><br>
+       <img src="images/loading.gif" title="Đang duyệt thư mục, vui lòng đợi...">
+    </div>
+    <div class="scrollPane">
+      <ul id="pnlDirList"></ul>
+    </div>
+   </td>
+   <td valign="top" id="fileActions">
+   <input type="hidden" id="hdViewType" value="list">
+   <input type="hidden" id="hdOrder" value="asc">
+    <div class="actions">
+      <input type="button" id="btnAddFile" value="Thêm" title="Upload files" onclick="addFileClick()" data-lang-v="AddFile" data-lang-t="T_AddFile" />
+      <input type="button" id="btnPreviewFile" value="Xem" title="Preview selected file" onclick="previewFile()" data-lang-v="Preview" data-lang-t="T_Preview" />
+      <input type="button" id="btnRenameFile" value="Đổi tên" title="Rename selected file" onclick="renameFile()" data-lang-v="RenameFile" data-lang-t="T_RenameFile" />
+      <input type="button" id="btnDownloadFile" value="Tải xuống" title="Download selected file" onclick="downloadFile()" data-lang-v="DownloadFile" data-lang-t="T_DownloadFile" />
+      <input type="button" id="btnDeleteFile" value="Xóa" title="Delete selected file" onclick="deleteFile()" data-lang-v="DeleteFile" data-lang-t="T_DeleteFile" />
+      <input type="button" id="btnSelectFile" value="Chọn" title="Select highlighted file" onclick="setFile()" data-lang-v="SelectFile" data-lang-t="T_SelectFile" />
+      <br>
+      <span data-lang="OrderBy">Order by</span>:
+      <select id="ddlOrder" onchange="sortFiles()">
+        <option value="name" data-lang="Name_asc">&uarr;&nbsp;&nbsp;Tên</option>
+        <option value="size" data-lang="Size_asc">&uarr;&nbsp;&nbsp;Kích cở</option>
+        <option value="time" data-lang="Date_asc">&uarr;&nbsp;&nbsp;Thời gian</option>
+        <option value="name_desc" data-lang="Name_desc">&darr;&nbsp;&nbsp;Tên</option>
+        <option value="size_desc" data-lang="Size_desc">&darr;&nbsp;&nbsp;Kích cở</option>
+        <option value="time_desc" data-lang="Date_desc">&darr;&nbsp;&nbsp;Thời gian</option>
+      </select>&nbsp;&nbsp;
+      <input type="button" id="btnListView" class="btnView" value=" " title="List view" onclick="switchView('list')" data-lang-t="T_ListView" />
+      <input type="button" id="btnThumbView" class="btnView" value=" " title="Thumbnails view" onclick="switchView('thumb')" data-lang-t="T_ThumbsView" />&nbsp;&nbsp;
+      <input type="text" id="txtSearch" onkeyup="filterFiles()" onchange="filterFiles()" />
+    </div>
+    <div class="pnlFiles">
+       <div class="scrollPane">
+         <div id="pnlLoading">
+          <span data-lang="LoadingFiles">Loading files...</span><br>
+          <img src="images/loading.gif" title="Loading files, please wait...">
+          </div>
+          <div id="pnlEmptyDir" data-lang="DirIsEmpty">
+          Thư mục rỗng
+          </div>
+          <div id="pnlSearchNoFiles" data-lang="NoFilesFound">
+          Không tìm thấy tệp
+          </div>
+         <ul id="pnlFileList"></ul>
+       </div>
+    </div>
+   </td>
+  </tr>
+  <tr>
+    <td class="bottomLine">
+      &nbsp;&nbsp;&nbsp;<a href="http://www.roxyfileman.com" target="_blank">&copy; 2013 - <span id="copyYear"></span> RoxyFileman</a>
+    </td>
+    <td class="bottomLine">
+      <div id="pnlStatus">Status bar</div>
+    </td>
+  </tr>
+</table>
+
+<!-- Forms and other components -->
+<iframe name="frmUploadFile" width="0" height="0" style="display:none;border:0;"></iframe>
+<div id="dlgAddFile">
+  <form name="addfile" id="frmUpload" method="post" target="frmUploadFile" enctype="multipart/form-data">
+    <input type="hidden" name="d" id="hdDir" />
+    <div class="form"><br />
+      <input type="file" name="files[]" id="fileUploads" onchange="listUploadFiles(this.files)" multiple="multiple" />
+      <div id="uploadResult"></div>
+      <div class="uploadFilesList">
+        <div id="uploadFilesList"></div>
+      </div>
+    </div>
+  </form>
+</div>
+<div id="menuFile" class="contextMenu">
+  <a href="#" onclick="setFile()" data-lang="SelectFile" id="mnuSelectFile">Chọn</a><hr>
+  <a href="#" onclick="previewFile()" data-lang="Preview" id="mnuPreview">Xem</a><hr>
+  <a href="#" onclick="downloadFile()" data-lang="DownloadFile" id="mnuDownload">Tải xuống</a><hr>
+  <a href="#" onclick="return pasteToFiles(event, this)" data-lang="Paste" class="paste pale" id="mnuFilePaste">Dán</a><hr>
+  <a href="#" onclick="cutFile()" data-lang="Cut" id="mnuFileCut">Cắt</a><hr>
+  <a href="#" onclick="copyFile()" data-lang="Copy" id="mnuFileCopy">Sao chép</a><hr>
+  <a href="#" onclick="renameFile()" data-lang="RenameFile" id="mnuRenameFile">Đổi tên</a><hr>
+  <a href="#" onclick="deleteFile()" data-lang="DeleteFile" id="mnuDeleteFile">Xóa</a><!-- hr>
+  <a href="#" onclick="fileProperties()" id="mnuProp">Properties</a -->
+</div>
+<div id="menuDir" class="contextMenu">
+  <a href="#" onclick="downloadDir()" data-lang="Download" id="mnuDownloadDir">Tải xuống</a><hr>
+  <a href="#" onclick="addDir()" data-lang="T_CreateDir" id="mnuCreateDir">Tạo mới</a><hr>
+  <a href="#" onclick="return pasteToDirs(event, this)" data-lang="Paste" class="paste pale" id="mnuDirPaste">Dán</a><hr>
+  <a href="#" onclick="cutDir()" data-lang="Cut" id="mnuDirCut">Cắt</a><hr>
+  <a href="#" onclick="copyDir()" data-lang="Copy" id="mnuDirCopy">Sao chép</a><hr>
+  <a href="#" onclick="renameDir()" data-lang="RenameDir" id="mnuRenameDir">Đổi tên</a><hr>
+  <a href="#" onclick="deleteDir()" data-lang="DeleteDir" id="mnuDeleteDir">Xóa</a>
+</div>
+<div id="pnlRenameFile" class="dialog">
+  <span class="name"></span><br>
+  <input type="text" id="txtFileName">
+</div>
+<div id="pnlDirName" class="dialog">
+  <span class="name"></span><br>
+  <input type="text" id="txtDirName">
+</div>
+
+</body>
+</html>

@@ -1,0 +1,72 @@
+﻿@using Interconnected.Models.Entity
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/Layout.cshtml";
+}
+<div class="page_container">
+    <!--Welcome-->
+    <div class="wrap block">
+        <div class="container welcome_block">
+            <div class="welcome_line welcome_t"></div>
+            <span>Chào mừng đến với Forum!</span>
+            <span>Interconnected</span>
+            <div class="welcome_line welcome_b"></div>
+        </div>
+    </div>
+    <!--//Welcome-->    
+    <!--category-->
+    <div class="wrap block carousel_block">
+        <div class="container">
+            <h2 class="upper">CHỦ ĐỀ</h2>
+            <div class="row">
+                <div class="span12">
+                    <table class="table table-bordered table-striped">
+                        <tbody>
+                            @foreach (CATEGORy Item in ViewBag.ListCate)
+                            {
+                                int vote = 0;
+                                foreach (POST ItemP in Item.POSTs)
+                                {
+                                    vote = vote + ItemP.VOTEs.Count;
+                                }
+                                <tr>
+                                    <td><a href="@Url.Action("Index", "Categories", new { id=Item.ID, category=Item.URL_SLUG })">@Item.NAME (@Item.DESCRIPTION)</a></td>
+                                    <td>@Item.POSTs.Count (Bài viết)</td>
+                                    <td>@vote (Lượt đánh giá)</td>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!--//category-->
+    <!--latest posts-->
+    <div class="wrap block carousel_block">
+        <div class="container">
+            <h2 class="upper">BÀI MỚI</h2>
+            <div class="row">
+                <div class="span12">
+                    <ul id="mycarousel2" class="jcarousel-skin-tango">
+                        @foreach (POST Item in ViewBag.ListPost)
+                        {
+                            <li>
+                                <div class="post_carousel">
+                                    <img style="width: 270px; height: 190px" src="~/Assets/Upload/Post/@Item.PICTURE" alt="" />
+                                    <div class="title_t"><a href="@Url.Action("DetailPost", "Categories", new { id = Item.ID, post = Item.URL_SLUG, idCate = Item.ID_CATEGORY, category = Item.URL_SLUG })">@Item.TITLE</a></div>
+                                    <div class="post_meta">
+                                        Đăng: <a href="">@Item.USER.FULLNAME</a>  /  @Item.DATE_CREATED
+                                    </div>
+                                    @Item.DESCRIPTION <a href="@Url.Action("DetailPost", "Categories", new { id = Item.ID, post = Item.URL_SLUG, idCate = Item.ID_CATEGORY, category = Item.URL_SLUG })" class="arrow_link">Xem thêm...</a>
+                                </div>
+                            </li>
+                        }
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!--//latest posts-->
+</div>
+

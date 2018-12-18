@@ -1,0 +1,181 @@
+﻿@using Interconnected.Models.Entity
+@using Interconnected.Code.CustomAuth
+@model PagedList.IPagedList<COMMENT>
+@{
+    ViewBag.Title = "DetailPost";
+    Layout = "~/Views/Shared/Layout.cshtml";
+}
+@{
+    CustomPrincipal prin = null;
+    if (HttpContext.Current.User.GetType() == typeof(CustomPrincipal))
+    {
+        prin = (CustomPrincipal)HttpContext.Current.User;
+    }
+    List<CATEGORy> ListCategories = (List<CATEGORy>)ViewData["ListCategories"];
+}
+<!--page_container-->
+<div class="page_container">
+    <div class="breadcrumb">
+        <div class="wrap">
+            <div class="container">
+                <a href="@Url.Action("Index", "Home")">Trang chủ</a><span>/</span>
+                <a href="@Url.Action("Index", "Categories", new { id = ViewBag.Post.ID_CATEGORY, category = ViewBag.Post.CATEGORy.URL_SLUG })">@ViewBag.Post.CATEGORy.NAME</a><span>/</span>
+                @ViewBag.Post.TITLE
+            </div>
+        </div>
+    </div>
+    <div class="wrap">
+        <div class="container">
+            <section>
+                <div class="row pad5">
+                    <div class="span8">
+                        <div class="post">
+                            <div style="text-align: center">
+                                <img src="~/Assets/Upload/Post/@ViewBag.Post.PICTURE" alt="" />
+                            </div>
+                            <div class="post_info">
+                                <div class="fleft"><span>@ViewBag.Post.DATE_CREATED</span> / Đăng <a href="#">@ViewBag.Post.USER.FULLNAME</a> </div>
+                                <div class="fright">
+                                    <a class="btn btn-warning" href="javascript: void(0)">
+                                        @ViewBag.Post.VOTEs.Count Bình chọn
+                                    </a>
+                                    <a class="btn btn-warning" href="#discuss">
+                                        @ViewBag.Post.COMMENTS.Count Thảo luận
+                                    </a>
+                                    @if (ViewBag.Vote == 0)
+                                    {
+                                        <a class="btn btn-danger" href="@Url.Action("Index", "Login")">
+                                            <i class="icon-ok icon-white"></i> Đăng nhập để bình chọn
+                                        </a>
+                                    }
+                                    else if (ViewBag.Vote == 1)
+                                    {
+                                        <a class="btn btn-info" href="javascript: void(0)">
+                                            <i class="icon-ok icon-white"></i> Bạn đã bình chọn bài viết này
+                                        </a>
+                                    }
+                                    else
+                                    {
+                                        <a class="btn btn-success" href="@Url.Action("VotePost", "Categories", new { idPost = @ViewBag.Post.ID })">
+                                            <i class="icon-ok icon-white"></i> Bình chọn
+                                        </a>
+                                    }
+                                </div>
+                                <div class="clear"></div>
+                            </div>
+                            @Html.Raw(ViewBag.Post.DETAIL)
+                        </div>
+
+                        <!-- Comments -->
+                        <h4 id="discuss">Thảo luận</h4>
+                        @foreach (COMMENT Item in Model)
+                        {
+                            <div class="post">
+                                <div class="post_info">
+                                    <div class="fleft"><span>@Item.DATE_CREATED</span> / Đăng <a href="#">@Item.USER.FULLNAME</a> </div>
+                                    <div class="clear"></div>
+                                </div>
+                                @Html.Raw(Item.DETAIL)
+                            </div>
+                        }
+                        <!-- Paginate -->
+                        <div class="pagination" style="text-align: center">
+                            <ul>
+                                @{
+                                    int pagemin = 1;
+                                    if (Model.PageNumber > 2)
+                                    {
+                                        pagemin = Model.PageNumber - 2;
+                                    }
+                                    int pagemax = Model.PageCount;
+                                    if (Model.PageNumber + 2 <= Model.PageCount)
+                                    {
+                                        pagemax = Model.PageNumber + 2;
+                                    }
+                                }
+                                <!--Trang đầu-->
+                                @if (Model.PageNumber > 3)
+                                {
+                                    <li>
+                                        <a href="?page=1">Trang đầu</a>
+                                    </li>
+                                }
+
+                                @if (Model.PageNumber > 1)
+                                {
+                                    <li id="bootstrap-data-table_previous">
+                                        <a href="?page=@(Model.PageNumber-1)">Previous</a>
+                                    </li>
+                                }
+                                else
+                                {
+                                    <li id="bootstrap-data-table_previous">
+                                        <a href="javascript: void(0)">Previous</a>
+                                    </li>
+                                }
+                                @for (int i1 = pagemin; i1 <= pagemax; i1++)
+                                {
+                                    if (i1 == @Model.PageNumber)
+                                    {
+                                        <li class="active">
+                                            <a href="javascript:void(0)">@i1</a>
+                                        </li>
+                                    }
+                                    else
+                                    {
+                                        <li>
+                                            <a href="?page=@i1">@i1</a>
+                                        </li>
+                                    }
+                                }
+
+                                @if (Model.PageNumber < Model.PageCount)
+                                {
+                                    <li id="bootstrap-data-table_next">
+                                        <a href="?page=@(Model.PageNumber+1)">Next</a>
+                                    </li>
+                                }
+                                else
+                                {
+                                    <li id="bootstrap-data-table_next">
+                                        <a href="javascript: void(0)">Next</a>
+                                    </li>
+                                }
+
+                                <!--Trang cuối-->
+                                @if (Model.PageNumber + 2 <= Model.PageCount - 1)
+                                {
+                                    <li>
+                                        <a href="?page=@Model.PageCount">Trang cuối</a>
+                                    </li>
+                                }
+                            </ul>
+                        </div>
+                        <!-- //Comments -->
+                        <!-- Leave a Comment -->
+                        <h4>Tham gia thảo luận</h4>
+                        @if (prin != null)
+                        {
+                            <form action="@Url.Action("PostComment", "Categories", new { idPost = ViewBag.Post.ID })" method="post">
+                                @Html.AntiForgeryToken()
+                                <textarea style="width: 100%" name="DETAIL" class="span7 ckeditor" onfocus="if (this.value == 'Message...') this.value = '';" onblur="if (this.value == '') this.value = 'Message...';">Message...</textarea>
+                                <div class="clear"></div>
+                                <input type="submit" class="btn send_btn" value="Đăng" />
+                                <div class="clear"></div>
+                            </form>
+                        }
+                        else
+                        {
+                            <a class="btn send_btn" href="@Url.Action("Index", "Login")">Đăng nhập</a>
+                        }
+                        <!-- //Leave a Comment -->
+
+                    </div>
+                    @RenderPage("../Shared/Rightbar.cshtml")
+                </div>
+            </section>
+        </div>
+    </div>
+</div>
+<!--//page_container-->
+

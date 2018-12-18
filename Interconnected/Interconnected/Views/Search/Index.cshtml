@@ -1,0 +1,137 @@
+﻿@using Interconnected.Models.Entity
+@model PagedList.IPagedList<POST>
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/Layout.cshtml";
+}
+<div class="page_container">
+    <div class="breadcrumb">
+        <div class="wrap">
+            <div class="container">
+                <a href="@Url.Action("Index", "Home")">Trang chủ</a><span>/</span>@ViewBag.keySearch
+            </div>
+        </div>
+    </div>
+    <!--MAIN CONTENT AREA-->
+    <div class="wrap">
+        <div class="container inner_content">
+            <div id="options">
+                <ul id="filters" class="option-set" data-option-key="filter">
+                    <li><a href="javascript: void(0)" data-option-value="*" class="btn dark_btn selected">@ViewBag.keySearch</a></li>
+                </ul>
+                <div class="clear"></div>
+            </div>
+            <div class="row">
+                <!-- portfolio_block -->
+                <div class="projects">
+                    @{int i = 0;}
+                    @foreach (POST Item in Model)
+                    {
+                        <div class="span3 element category01">
+                            <div class="hover_img">
+                                <img src="~/Assets/Upload/Post/@Item.PICTURE" alt="" />
+                                <span class="portfolio_zoom"><a href="~/Assets/Upload/Post/@Item.PICTURE" rel="prettyPhoto[portfolio1]"></a></span>
+                                <span class="portfolio_link"><a href="@Url.Action("DetailPost", "Categories", new { id=Item.ID, post=Item.URL_SLUG, idCate=Item.ID_CATEGORY, category=Item.URL_SLUG })">View</a></span>
+                            </div>
+                            <div class="item_description">
+                                <h6><a href="@Url.Action("DetailPost", "Categories", new { id = Item.ID, post = Item.URL_SLUG, idCate = Item.ID_CATEGORY, category = Item.URL_SLUG })">@Item.TITLE</a></h6>
+                                <div class="descr">@Item.DESCRIPTION</div>
+                            </div>
+                        </div>
+                        i = i + 1;
+                        if (i % 4 == 0)
+                        {
+                            <div style="clear: both"></div>
+                        }
+                    }
+                    <div class="clear"></div>
+                </div>
+                <!-- //portfolio_block -->
+            </div>
+            <!-- Paginate -->
+            @{
+                string link = "";
+                if (ViewBag.keySearch != null && ViewBag.keySearch != "")
+                {
+                    link = "&keySearch=" + ViewBag.keySearch;
+                }
+            }
+            <div class="pagination" style="text-align: center">
+                <ul>
+                    @{
+                        int pagemin = 1;
+                        if (Model.PageNumber > 2)
+                        {
+                            pagemin = Model.PageNumber - 2;
+                        }
+                        int pagemax = Model.PageCount;
+                        if (Model.PageNumber + 2 <= Model.PageCount)
+                        {
+                            pagemax = Model.PageNumber + 2;
+                        }
+                    }
+                    <!--Trang đầu-->
+                    @if (Model.PageNumber > 3)
+                    {
+                        <li>
+                            <a href="?page=1&@link" aria-controls="bootstrap-data-table" data-dt-idx="1" tabindex="0">Trang đầu</a>
+                        </li>
+                    }
+
+                    @if (Model.PageNumber > 1)
+                    {
+                        <li id="bootstrap-data-table_previous">
+                            <a href="?page=@(Model.PageNumber-1)@link" aria-controls="bootstrap-data-table" data-dt-idx="0" tabindex="0">Previous</a>
+                        </li>
+                    }
+                    else
+                    {
+                        <li id="bootstrap-data-table_previous">
+                            <a href="javascript: void(0)" aria-controls="bootstrap-data-table" data-dt-idx="0" tabindex="0">Previous</a>
+                        </li>
+                    }
+                    @for (int i1 = pagemin; i1 <= pagemax; i1++)
+                    {
+                        if (i1 == @Model.PageNumber)
+                        {
+                            <li>
+                                <a href="?page=@i1@link" aria-controls="bootstrap-data-table" data-dt-idx="1" tabindex="0">@i1</a>
+                            </li>
+                        }
+                        else
+                        {
+                            <li>
+                                <a href="?page=@i1@link" aria-controls="bootstrap-data-table" data-dt-idx="1" tabindex="0">@i1</a>
+                            </li>
+                        }
+                    }
+
+                    @if (Model.PageNumber < Model.PageCount)
+                    {
+                        <li id="bootstrap-data-table_next">
+                            <a href="?page=@(Model.PageNumber+1)@link" aria-controls="bootstrap-data-table" data-dt-idx="7" tabindex="0">Next</a>
+                        </li>
+                    }
+                    else
+                    {
+                        <li id="bootstrap-data-table_next">
+                            <a href="javascript: void(0)" aria-controls="bootstrap-data-table" data-dt-idx="7" tabindex="0">Next</a>
+                        </li>
+                    }
+
+                    <!--Trang cuối-->
+                    @if (Model.PageNumber + 2 <= Model.PageCount - 1)
+                    {
+                        <li>
+                            <a href="?page=@Model.PageCount@link" aria-controls="bootstrap-data-table" data-dt-idx="1" tabindex="0">Trang cuối</a>
+                        </li>
+                    }
+                </ul>
+            </div>
+
+        </div>
+    </div>
+    <!--//MAIN CONTENT AREA-->
+
+</div>
+

@@ -1,0 +1,120 @@
+﻿@using Interconnected.Models.Entity
+@model USER
+@{
+    ViewBag.Title = "Edit";
+    Layout = "~/Views/Shared/Layout.cshtml";
+}
+<div class="page_container">
+    <div class="breadcrumb">
+        <div class="wrap">
+            <div class="container">
+                <a href="@Url.Action("Index", "Home")">Trang chủ</a><span>/</span>
+                <a href="@Url.Action("Index", "UserManager")">Quản lý người dùng</a><span>/</span>Sửa người dùng
+            </div>
+        </div>
+    </div>
+    <!--MAIN CONTENT AREA-->
+    <div class="wrap">
+        <div class="container inner_content">
+            <div class="row">
+                <div class="span8">
+                    @if (@ViewBag.message_er != "" && @ViewBag.message_er != null)
+                    {
+                        <div class="alert alert-error">
+                            <a class="close" data-dismiss="alert">×</a>
+                            @ViewBag.message_er.
+                        </div>
+                    }
+                    <form action="" method="post" class="form-horizontal" enctype="multipart/form-data">
+                        @Html.AntiForgeryToken()
+                        <fieldset>
+                            <legend>Sửa người dùng</legend>
+                            <div class="control-group">
+                                <label class="control-label" for="EMAIL">Email</label>
+                                <div class="controls">
+                                    <input style="padding: 4px 0px;" name="EMAIL" class="input-xlarge focused" id="EMAIL" type="email" value="@Model.EMAIL">
+                                </div>
+                            </div>
+                            <div class="control-group">
+                                <label class="control-label" for="PASSWORD">Pasword</label>
+                                <div class="controls">
+                                    <input style="padding: 4px 0px;" name="PASSWORD" class="input-xlarge focused" id="PASSWORD" type="password" value="">
+                                </div>
+                            </div>
+                            <div class="control-group">
+                                <label class="control-label" for="FULLNAME">Fullname</label>
+                                <div class="controls">
+                                    <input style="padding: 4px 0px;" name="FULLNAME" class="input-xlarge" id="FULLNAME" type="text" value="@Model.FULLNAME">
+                                </div>
+                            </div>
+                            <div class="control-group">
+                                <label class="control-label" for="PICTURE">Picture</label>
+                                <div class="controls">
+                                    <input style="padding: 4px 0px;" class="input-xlarge" id="PICTURE" type="file" name="PICTURE">
+                                </div>
+                            </div>
+                            <div class="control-group">
+                                <label class="control-label" for="PHONE">Phone</label>
+                                <div class="controls">
+                                    <input style="padding: 4px 0px;" name="PHONE" class="input-xlarge" id="PHONE" type="text" value="@Model.PHONE">
+                                </div>
+                            </div>
+                            <div class="control-group">
+                                <label class="control-label" for="ADDRESS">Address</label>
+                                <div class="controls">
+                                    <input style="padding: 4px 0px;" name="ADDRESS" class="input-xlarge" id="ADDRESS" type="text" value="@Model.ADDRESS">
+                                </div>
+                            </div>
+                            <div class="control-group">
+                                <label class="control-label" for="ID_ROLE">Role</label>
+                                <div class="controls">
+                                    <select class="ListRole input-xlarge" name="ID_ROLE" id="ID_ROLE">
+                                        @foreach (ROLE Item in ViewBag.ListRole)
+                                        {
+                                            string sl = "";
+                                            if (Item.ID == Model.ID_ROLE)
+                                            {
+                                                sl = "selected";
+                                            }
+                                            <option @sl value="@Item.ID">@Item.NAME</option>
+                                        }
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="control-group">
+                                <label class="control-label" for="ACTIVE"></label>
+                                <div class="controls">
+                                    <label class="checkbox">
+                                        @if (Model.ACTIVE)
+                                        {
+                                            <input value="true" checked name="ACTIVE" type="checkbox"> @:Active
+                                        }
+                                        else
+                                        {
+                                            <input value="true" name="ACTIVE" type="checkbox"> @:Active
+                                        }
+                                    </label>
+                                </div>
+                            </div>
+                            <div class="form-actions">
+                                <button type="submit" class="btn send_btn">Edit</button>
+                                <button type="reset" class="btn dark_btn">Reset</button>
+                            </div>
+                        </fieldset>
+                    </form>
+                </div>
+
+                <div class="span4">
+                    <h3>Sửa người dùng</h3>
+                    <p>Điền đúng địa chỉ email</p>
+                    <p>Email trường bắt buộc</p>
+                    <p>Nhập vào Password nếu muốn thay đổi</p>
+                    <p>Nên điền đầy đủ thông tin</p>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!--/MAIN CONTENT AREA-->
+
+</div>
+

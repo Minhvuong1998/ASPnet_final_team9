@@ -1,0 +1,29 @@
+﻿@model Interconnected.Models.Entity.ABOUT
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/Layout.cshtml";
+}
+<!--page_container-->
+<div class="page_container">
+    <div class="breadcrumb">
+        <div class="wrap">
+            <div class="container">
+                <a href="@Url.Action("Index", "Home")">Trang chủ</a><span>/</span>Nội quy
+            </div>
+        </div>
+    </div>
+    <div class="wrap">
+        <div class="container">
+            <section>
+                <div class="row">
+                    <div class="span12">
+                        <h2 class="title"><span>Nội quy</span></h2>
+                        @Html.Raw(Model.CONTENTS)
+                    </div>
+                </div>
+            </section>
+        </div>
+    </div>
+</div>
+<!--//page_container-->
+

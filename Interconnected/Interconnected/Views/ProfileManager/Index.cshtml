@@ -1,0 +1,98 @@
+﻿@using Interconnected.Models.Entity
+@using Interconnected.Code.CustomAuth
+@model USER
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/Layout.cshtml";
+}
+<div class="page_container">
+    <div class="breadcrumb">
+        <div class="wrap">
+            <div class="container">
+                <a href="@Url.Action("Index", "Home")">Trang chủ</a><span>/</span>
+                Thông tin tài khoản
+            </div>
+        </div>
+    </div>
+    <!--MAIN CONTENT AREA-->
+    <div class="wrap">
+        <div class="container inner_content">
+            <div class="row">
+                <div class="span8">
+                    @if (@ViewBag.message != "" && @ViewBag.message != null)
+                    {
+                        <div class="alert alert-success">
+                            <a class="close" data-dismiss="alert">×</a>
+                            @ViewBag.message.
+                        </div>
+                    }
+                    @if (@ViewBag.message_er != "" && @ViewBag.message_er != null)
+                    {
+                        <div class="alert alert-error">
+                            <a class="close" data-dismiss="alert">×</a>
+                            @ViewBag.message_er.
+                        </div>
+                    }
+                    <form action="" method="post" class="form-horizontal" enctype="multipart/form-data">
+                        @Html.AntiForgeryToken()
+                        <fieldset>
+                            <legend>Sửa người dùng</legend>
+                            <div class="control-group">
+                                <label class="control-label" for="EMAIL">Email</label>
+                                <div class="controls">
+                                    <input style="padding: 4px 0px;" name="EMAIL" class="input-xlarge focused" id="EMAIL" type="email" value="@Model.EMAIL">
+                                </div>
+                            </div>
+                            <div class="control-group">
+                                <label class="control-label" for="PASSWORD">Pasword</label>
+                                <div class="controls">
+                                    <input style="padding: 4px 0px;" name="PASSWORD" class="input-xlarge focused" id="PASSWORD" type="password" value="">
+                                </div>
+                            </div>
+                            <div class="control-group">
+                                <label class="control-label" for="FULLNAME">Fullname</label>
+                                <div class="controls">
+                                    <input style="padding: 4px 0px;" name="FULLNAME" class="input-xlarge" id="FULLNAME" type="text" value="@Model.FULLNAME">
+                                </div>
+                            </div>
+                            <div class="control-group">
+                                <label class="control-label" for="PICTURE">Picture</label>
+                                <img src="~/Assets/Upload/User/@Model.PICTURE" style="width: 200px" /> 
+                                <div class="controls">
+                                    <input style="padding: 4px 0px;" class="input-xlarge" id="PICTURE" type="file" name="PICTURE">
+                                </div>
+                            </div>
+                            <div class="control-group">
+                                <label class="control-label" for="PHONE">Phone</label>
+                                <div class="controls">
+                                    <input style="padding: 4px 0px;" name="PHONE" class="input-xlarge" id="PHONE" type="text" value="@Model.PHONE">
+                                </div>
+                            </div>
+                            <div class="control-group">
+                                <label class="control-label" for="ADDRESS">Address</label>
+                                <div class="controls">
+                                    <input style="padding: 4px 0px;" name="ADDRESS" class="input-xlarge" id="ADDRESS" type="text" value="@Model.ADDRESS">
+                                </div>
+                            </div>
+                            <div class="form-actions">
+                                <button type="submit" class="btn send_btn">Update</button>
+                                <button type="reset" class="btn dark_btn">Reset</button>
+                            </div>
+                        </fieldset>
+                    </form>
+                </div>
+
+                <div class="span4">
+                    <h3>Thông tin cá nhân</h3>
+                    <p>Điền đúng địa chỉ email</p>
+                    <p>Email trường bắt buộc</p>
+                    <p>Nhập vào Password nếu muốn thay đổi</p>
+                    <p>Nên điền đầy đủ thông tin</p>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!--/MAIN CONTENT AREA-->
+
+</div>
+

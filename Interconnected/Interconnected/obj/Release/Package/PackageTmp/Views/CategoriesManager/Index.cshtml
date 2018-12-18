@@ -1,0 +1,156 @@
+﻿@using Interconnected.Models.Entity
+@model PagedList.IPagedList<CATEGORy>
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/Layout.cshtml";
+}
+<div class="page_container">
+    <div class="breadcrumb">
+        <div class="wrap">
+            <div class="container">
+                <a href="@Url.Action("Index", "Home")">Trang chủ</a><span>/</span>Chủ đề
+            </div>
+        </div>
+    </div>
+    <!--MAIN CONTENT AREA-->
+    <div class="wrap">
+        <div class="container inner_content">
+            <!-- Tables -->
+            <section id="tables">
+                <div class="page-header">
+                    <h2 class="title"><span>Quản lý chủ đề</span></h2>
+                </div>
+                @if (@ViewBag.message != "" && @ViewBag.message != null)
+                {
+                    <div class="alert alert-success">
+                        <a class="close" data-dismiss="alert">×</a>
+                        @ViewBag.message.
+                    </div>
+                }
+                @if (@ViewBag.message_er != "" && @ViewBag.message_er != null)
+                {
+                    <div class="alert alert-error">
+                        <a class="close" data-dismiss="alert">×</a>
+                        @ViewBag.message_er.
+                    </div>
+                }
+
+                <a class="btn btn-small btn-info" href="@Url.Action("Add", "CategoriesManager")"><i class=" icon-plus icon-white"></i></a><br />
+                <table class="table table-bordered table-striped">
+                    <thead>
+                        <tr>
+                            <th>STT</th>
+                            <th>NAME</th>
+                            <th>DESCRIPTION</th>
+                            <th>Control</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @{int i = 0;}
+                        @foreach (CATEGORy Item in Model)
+                        {
+                            i = i + 1;
+                            <tr>
+                                <td>@i</td>
+                                <td>
+                                    @Item.NAME
+                                </td>
+                                <td>
+                                    @Item.DESCRIPTION
+                                </td>
+                                <td>
+                                    <a class="btn btn-small btn-primary" href="@Url.Action("Edit", "CategoriesManager", new { id = Item.ID })"><i class="icon-edit icon-white"></i></a>
+                                    <a class="btn btn-small btn-danger" href="@Url.Action("Delete", "CategoriesManager", new { id = Item.ID })"><i class="icon-remove-sign icon-white"></i></a>
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+                <!-- Paginate -->
+                @{
+                    string link = "";
+                    if (ViewBag.key != null && ViewBag.key != "")
+                    {
+                        link = "&key=" + ViewBag.key;
+                    }
+                }
+                <div class="pagination" style="text-align: center">
+                    <ul>
+                        @{
+                            int pagemin = 1;
+                            if (Model.PageNumber > 2)
+                            {
+                                pagemin = Model.PageNumber - 2;
+                            }
+                            int pagemax = Model.PageCount;
+                            if (Model.PageNumber + 2 <= Model.PageCount)
+                            {
+                                pagemax = Model.PageNumber + 2;
+                            }
+                        }
+                        <!--Trang đầu-->
+                        @if (Model.PageNumber > 3)
+                        {
+                            <li>
+                                <a href="?page=1&@link" aria-controls="bootstrap-data-table" data-dt-idx="1" tabindex="0">Trang đầu</a>
+                            </li>
+                        }
+
+                        @if (Model.PageNumber > 1)
+                        {
+                            <li id="bootstrap-data-table_previous">
+                                <a href="?page=@(Model.PageNumber-1)@link" aria-controls="bootstrap-data-table" data-dt-idx="0" tabindex="0">Previous</a>
+                            </li>
+                        }
+                        else
+                        {
+                            <li id="bootstrap-data-table_previous">
+                                <a href="javascript: void(0)" aria-controls="bootstrap-data-table" data-dt-idx="0" tabindex="0">Previous</a>
+                            </li>
+                        }
+                        @for (int i1 = pagemin; i1 <= pagemax; i1++)
+                        {
+                            if (i1 == @Model.PageNumber)
+                            {
+                                <li>
+                                    <a href="?page=@i1@link" aria-controls="bootstrap-data-table" data-dt-idx="1" tabindex="0">@i1</a>
+                                </li>
+                            }
+                            else
+                            {
+                                <li>
+                                    <a href="?page=@i1@link" aria-controls="bootstrap-data-table" data-dt-idx="1" tabindex="0">@i1</a>
+                                </li>
+                            }
+                        }
+
+                        @if (Model.PageNumber < Model.PageCount)
+                        {
+                            <li id="bootstrap-data-table_next">
+                                <a href="?page=@(Model.PageNumber+1)@link" aria-controls="bootstrap-data-table" data-dt-idx="7" tabindex="0">Next</a>
+                            </li>
+                        }
+                        else
+                        {
+                            <li id="bootstrap-data-table_next">
+                                <a href="javascript: void(0)" aria-controls="bootstrap-data-table" data-dt-idx="7" tabindex="0">Next</a>
+                            </li>
+                        }
+
+                        <!--Trang cuối-->
+                        @if (Model.PageNumber + 2 <= Model.PageCount - 1)
+                        {
+                            <li>
+                                <a href="?page=@Model.PageCount@link" aria-controls="bootstrap-data-table" data-dt-idx="1" tabindex="0">Trang cuối</a>
+                            </li>
+                        }
+                    </ul>
+                </div>
+            </section>
+
+        </div>
+    </div>
+    <!--/MAIN CONTENT AREA-->
+
+</div>
+

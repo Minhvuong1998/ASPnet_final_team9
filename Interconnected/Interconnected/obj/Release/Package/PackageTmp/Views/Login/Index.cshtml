@@ -1,0 +1,63 @@
+﻿@using Interconnected.Models.Entity
+@model LOGIN
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/Layout.cshtml";
+}
+<div class="page_container">
+    <div class="breadcrumb">
+        <div class="wrap">
+            <div class="container">
+                <a href="@Url.Action("Index", "Home")">Trang chủ</a><span>/</span>Đăng nhập
+            </div>
+        </div>
+    </div>
+    <!--MAIN CONTENT AREA-->
+    <div class="wrap">
+        <div class="container inner_content">
+            <div class="row">
+                @if (ViewBag.message_su != null)
+                {
+                    <div style="text-align: center" class="alert alert-success">@Html.Raw(ViewBag.message_su)</div>
+                }
+                @if (ViewBag.message_er != null)
+                {
+                    <div style="text-align: center" class="alert alert-danger">@Html.Raw(ViewBag.message_er)</div>
+                }
+                <div class="span8">
+                    <form action="" method="post" class="form-horizontal">
+                        @Html.AntiForgeryToken()
+                        <fieldset>
+                            <legend>Đăng nhập</legend>
+                            <div class="control-group">
+                                <label class="control-label" for="EMAIL">Email</label>
+                                <div class="controls">
+                                    <input style="padding: 4px 0px;" name="email" class="input-xlarge focused" id="EMAIL" type="email" value="">
+                                </div>
+                            </div>
+                            <div class="control-group">
+                                <label class="control-label" for="PASSWORD">Pasword</label>
+                                <div class="controls">
+                                    <input style="padding: 4px 0px;" name="password" class="input-xlarge focused" id="PASSWORD" type="password" value="">
+                                </div>
+                            </div>
+                            <div class="form-actions">
+                                <button type="submit" class="btn send_btn">Login</button>
+                                <button type="reset" class="btn dark_btn">Reset</button>
+                            </div>
+                        </fieldset>
+                    </form>
+                </div>
+
+                <div class="span4">
+                    <h3>Đăng nhập</h3>
+                    <p>Điền đầy đủ thông tin email, password</p>
+                    <h3>Nếu chưa có tài khoản đăng ký <a href="@Url.Action("Regis", "Login")">tại đây</a></h3>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!--/MAIN CONTENT AREA-->
+
+</div>
+

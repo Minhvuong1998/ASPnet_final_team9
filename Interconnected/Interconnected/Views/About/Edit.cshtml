@@ -1,0 +1,57 @@
+﻿@model Interconnected.Models.Entity.ABOUT
+@{
+    ViewBag.Title = "Edit";
+    Layout = "~/Views/Shared/Layout.cshtml";
+}
+<div class="page_container">
+    <div class="breadcrumb">
+        <div class="wrap">
+            <div class="container">
+                <a href="@Url.Action("Index", "Home")">Trang chủ</a><span>/</span>
+                Nội quy
+            </div>
+        </div>
+    </div>
+    <!--MAIN CONTENT AREA-->
+    <div class="wrap">
+        <div class="container inner_content">
+            <div class="row">
+                <div class="span12">
+                    @if (@ViewBag.message != "" && @ViewBag.message != null)
+                    {
+                        <div class="alert alert-success">
+                            <a class="close" data-dismiss="alert">×</a>
+                            @ViewBag.message.
+                        </div>
+                    }
+                    @if (@ViewBag.message_er != "" && @ViewBag.message_er != null)
+                    {
+                        <div class="alert alert-error">
+                            <a class="close" data-dismiss="alert">×</a>
+                            @ViewBag.message_er.
+                        </div>
+                    }
+                    <form action="@Url.Action("Edit", "About", new { id=Model.ID })" method="post" class="form-horizontal">
+                        @Html.AntiForgeryToken()
+                        <fieldset>
+                            <legend>Sửa nội quy</legend>
+                            <div class="control-group">
+                                <label class="control-label" for="CONTENTS">Nội dung</label>
+                                <div class="controls">
+                                    <textarea name="CONTENTS" class="input-xlarge ckeditor" id="CONTENTS" rows="5">@Model.CONTENTS</textarea>
+                                </div>
+                            </div>
+                            <div class="form-actions">
+                                <button type="submit" class="btn send_btn">Update</button>
+                                <button type="reset" class="btn dark_btn">Reset</button>
+                            </div>
+                        </fieldset>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!--/MAIN CONTENT AREA-->
+
+</div>
+

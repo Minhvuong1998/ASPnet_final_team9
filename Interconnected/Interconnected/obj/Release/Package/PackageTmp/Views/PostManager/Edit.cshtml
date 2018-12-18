@@ -1,0 +1,109 @@
+﻿@using Interconnected.Models.Entity
+@using Interconnected.Code.CustomAuth
+@model POST
+@{
+    ViewBag.Title = "Edit";
+    Layout = "~/Views/Shared/Layout.cshtml";
+}
+@{
+    CustomPrincipal prin = (CustomPrincipal)HttpContext.Current.User;
+}
+<div class="page_container">
+    <div class="breadcrumb">
+        <div class="wrap">
+            <div class="container">
+                <a href="@Url.Action("Index", "Home")">Trang chủ</a><span>/</span>
+                <a href="@Url.Action("Index", "PostManager")">Quản lý bài viết</a><span>/</span>Thêm bài viết
+            </div>
+        </div>
+    </div>
+    <!--MAIN CONTENT AREA-->
+    <div class="wrap">
+        <div class="container inner_content">
+            <div class="row">
+                <div class="span8">
+                    <form action="" method="post" class="form-horizontal" enctype="multipart/form-data">
+                        @Html.AntiForgeryToken()
+                        <fieldset>
+                            <legend>Thêm bài viết mới</legend>
+                            <div class="control-group">
+                                <label class="control-label" for="TITLE">Title</label>
+                                <div class="controls">
+                                    <input style="padding: 4px 0px;" name="TITLE" class="input-xlarge focused" id="TITLE" type="text" value="@Model.TITLE">
+                                </div>
+                                @Html.ValidationMessageFor(model => model.TITLE, null, new { @style = "color: red" })
+                            </div>
+                            <div class="control-group">
+                                <label class="control-label" for="PICTURE">Picture</label>
+                                <img src="~/Assets/Upload/Post/@Model.PICTURE" style="width: 200px" />
+                                <div class="controls">
+                                    <input style="padding: 4px 0px;" class="input-xlarge" id="PICTURE" type="file" name="PICTURE">
+                                </div>
+                            </div>
+                            <div class="control-group">
+                                <label class="control-label" for="ID_CATEGORY">Chủ đề</label>
+                                <div class="controls">
+                                    <select name="ID_CATEGORY" class="input-xlarge Category" id="ID_CATEGORY">
+                                        <option value="0">All ...</option>
+                                        @foreach (CATEGORy Item1 in ViewBag.ListCategories)
+                                        {
+                                            string sl = "";
+                                            if (Model.ID_CATEGORY == Item1.ID)
+                                            {
+                                                sl = "selected='selected'";
+                                            }
+                                            <option @sl value="@Item1.ID">@Item1.NAME</option>
+                                        }
+                                    </select>
+                                </div>
+                                @Html.ValidationMessageFor(model => model.ID_CATEGORY, null, new { @style = "color: red" })
+                            </div>
+                            <div class="control-group">
+                                <label class="control-label" for="DESCRIPTION">Description</label>
+                                <div class="controls">
+                                    <textarea name="DESCRIPTION" class="input-xlarge" id="DESCRIPTION" rows="5">@Model.DESCRIPTION</textarea>
+                                </div>
+                            </div>
+                            <div class="control-group">
+                                <label class="control-label" for="DETAIL">Detail</label>
+                                <div class="controls">
+                                    <textarea name="DETAIL" class="input-xlarge ckeditor" id="DETAIL" rows="5">@Model.DETAIL</textarea>
+                                </div>
+                            </div>
+                            @if (prin.ROLE.Equals(Interconnected.Code.ConstanAppkey.ADMIN()) || prin.ROLE.Equals(Interconnected.Code.ConstanAppkey.MOD()))
+                            {
+                                <div class="control-group">
+                                    <label class="control-label" for="ACTIVE"></label>
+                                    <div class="controls">
+                                        <label class="checkbox">
+                                            @if (Model.ACTIVE)
+                                            {
+                                                <input value="true" checked name="ACTIVE" type="checkbox"> @:Active
+                                            }
+                                            else
+                                            {
+                                                <input value="true" name="ACTIVE" type="checkbox"> @:Active
+                                            }
+                                        </label>
+                                    </div>
+                                </div>
+                            }
+                            <div class="form-actions">
+                                <button type="submit" class="btn send_btn">Edit</button>
+                                <button type="reset" class="btn dark_btn">Reset</button>
+                            </div>
+                        </fieldset>
+                    </form>
+                </div>
+
+                <div class="span4">
+                    <h3>Thêm bài viết</h3>
+                    <p>Điền đầy đủ thông tin</p>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!--/MAIN CONTENT AREA-->
+
+</div>
+

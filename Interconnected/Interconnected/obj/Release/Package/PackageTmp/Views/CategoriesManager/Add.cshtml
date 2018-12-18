@@ -1,0 +1,67 @@
+﻿@using Interconnected.Models.Entity
+@model CATEGORy
+@{
+    ViewBag.Title = "Add";
+    Layout = "~/Views/Shared/Layout.cshtml";
+}
+<div class="page_container">
+    <div class="breadcrumb">
+        <div class="wrap">
+            <div class="container">
+                <a href="@Url.Action("Index", "Home")">Trang chủ</a><span>/</span>
+                <a href="@Url.Action("Index", "CategoriesManager")">Quản lý chủ đề</a><span>/</span>Thêm chủ đề
+            </div>
+        </div>
+    </div>
+    <!--MAIN CONTENT AREA-->
+    <div class="wrap">
+        <div class="container inner_content">
+            <div class="row">
+                <div class="span8">
+                    <form action="" method="post" class="form-horizontal">
+                        @Html.AntiForgeryToken()
+                        <fieldset>
+                            <legend>Thêm chủ đề mới</legend>
+                            <div class="control-group">
+                                <label class="control-label" for="NAME">NAME</label>
+                                <div class="controls">
+                                    <input style="padding: 4px 0px;" name="NAME" class="input-xlarge focused" id="NAME" type="text" value="">
+                                </div>
+                            </div>
+                            <div class="control-group">
+                                <label class="control-label" for="DESCRIPTION">DESCRIPTION</label>
+                                <div class="controls">
+                                    <textarea name="DESCRIPTION" class="input-xlarge" id="DESCRIPTION" rows="5"></textarea>
+                                </div>
+                            </div>
+                            <div class="control-group">
+                                <label class="control-label" for="ListParent">PARENT</label>
+                                <div class="controls">
+                                    <select class="ListParent input-xlarge" name="ID_PARENT" id="ListParent">
+                                        <option value="0">No parent</option>
+                                        @foreach (CATEGORy Item in ViewBag.ListCategories)
+                                        {
+                                            <option value="@Item.ID">@Item.NAME</option>
+                                        }
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="form-actions">
+                                <button type="submit" class="btn send_btn">Add</button>
+                                <button type="reset" class="btn dark_btn">Reset</button>
+                            </div>
+                        </fieldset>
+                    </form>
+                </div>
+
+                <div class="span4">
+                    <h3>Thêm chủ đề mới</h3>
+                    <p>Điền đầy đủ thông tin</p>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!--/MAIN CONTENT AREA-->
+
+</div>
+

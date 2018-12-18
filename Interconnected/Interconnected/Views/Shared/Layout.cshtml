@@ -1,0 +1,79 @@
+﻿@{
+    Layout = null;
+}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>Interconnected</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="">
+    <meta name="author" content="">
+
+    <link href='http://fonts.googleapis.com/css?family=Open+Sans:400,600,700,800' rel='stylesheet' type='text/css'>
+    <link href="~/Assets/css/prettyPhoto.css" rel="stylesheet" type="text/css" />
+    <link rel="stylesheet" id="camera-css" href="~/Assets/css/camera.css" type="text/css" media="all">
+    <link href="~/Assets/css/bootstrap.css" rel="stylesheet">    
+    <link href="~/Assets/css/theme.css" rel="stylesheet">
+    <link rel="stylesheet" type="text/css" href="~/Assets/css/skins/tango/skin.css" />
+    <link href="~/Assets/css/bootstrap-responsive.css" rel="stylesheet">
+    <link href="~/Assets/css/style.css" rel="stylesheet">
+    <!-- Select -->
+    <link rel="stylesheet" href="~/Assets/CustomJs/select/dist/fastselect.css">
+    <!--[if lt IE 9]>
+        <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+</head>
+<body>
+    <!--header-->
+    @RenderPage("Header.cshtml")
+    <!--//header-->
+
+    <!--page_container-->
+    @RenderBody()
+    <!--//page_container-->
+
+    <!--footer-->
+    @RenderPage("Footer.cshtml")
+    <!--//footer-->
+
+    <style>
+        .input-xlarge {
+            width: 100%;
+        }
+    </style>
+    <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.8.2/jquery.min.js"></script>
+    @*<script type="text/javascript" src="~/Assets/CustomJs/jquery-2.1.1.min.js"></script>*@
+    <script type="text/javascript" src="~/Assets/js/jquery.easing.1.3.js"></script>
+    <script type="text/javascript" src="~/Assets/js/jquery.mobile.customized.min.js"></script>
+    <script type="text/javascript" src="~/Assets/js/camera.js"></script>
+    <script src="~/Assets/js/bootstrap.js"></script>
+    <script src="~/Assets/js/superfish.js"></script>
+    <script type="text/javascript" src="~/Assets/js/jquery.prettyPhoto.js"></script>
+    <script type="text/javascript" src="~/Assets/js/jquery.jcarousel.js"></script>
+    <script type="text/javascript" src="~/Assets/js/jquery.tweet.js"></script>
+    <script type="text/javascript" src="~/Assets/js/myscript.js"></script>
+    <!-- Select -->
+    <script src="~/Assets/CustomJs/select/dist/fastselect.standalone.js"></script>
+    <script src="~/Assets/ckeditor/ckeditor.js"></script>
+    <script src="~/Assets/ckfinder/ckfinder.js"></script>
+    <script type="text/javascript">
+		$(document).ready(function(){
+			//Slider
+			$('#camera_wrap_1').camera();
+
+			//Featured works & latest posts
+			$('#mycarousel, #mycarousel2, #newscarousel').jcarousel();
+		});
+		$('.ListRole').fastselect({
+		    placeholder: 'Chọn quyền'
+		});
+		$('.Category').fastselect({
+		    placeholder: 'Chọn Tag'
+		});
+		$('.ListParent').fastselect({
+		    placeholder: 'Chọn chủ đề'
+		});
+    </script>
+</body>
+</html>

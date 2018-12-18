@@ -1,0 +1,84 @@
+﻿@using Interconnected.Code.CustomAuth
+@using Interconnected.Code
+@using Interconnected.Models.Entity
+@{
+    CustomPrincipal prin = null;
+    if (HttpContext.Current.User.GetType() == typeof(CustomPrincipal))
+    {
+        prin = (CustomPrincipal)HttpContext.Current.User;
+    }
+    List<CATEGORy> ListCategories = (List<CATEGORy>)ViewData["ListCategories"];
+}
+<div class="header">
+    <div class="wrap">
+        <div class="navbar navbar_ clearfix">
+            <div class="container">
+                <div class="row">
+                    <div class="span4">
+                        <div class="logo">
+                            <h2>
+                                <a style="text-decoration: none" href="@Url.Action("Index", "Home")">INTERCONNECTED</a>
+                            </h2>
+                        </div>
+                    </div>
+                    <div class="span8">
+                        <div class="follow_us">
+                            <ul>
+                                <li><a href="#" class="facebook">Facebook</a></li>
+                                <li><a href="#" class="vimeo">Vimeo</a></li>
+                                <li><a href="#" class="tumbrl">Tumbrl</a></li>
+                                <li><a href="#" class="twitter">Twitter</a></li>
+                                <li><a href="#" class="delicious">Delicious</a></li>
+                            </ul>
+                        </div>
+                        <div class="clear"></div>
+                        <nav id="main_menu">
+                            <div class="menu_wrap">
+                                <ul class="nav sf-menu">
+                                    <li class='@((ViewBag.Active=="index")?"current":"")'><a href="@Url.Action("Index", "Home")">Trang chủ</a></li>
+                                    <li class='sub-menu @((ViewBag.Active=="category")?"current":"")'>
+                                        <a href="javascript:{}">Chủ đề</a>
+                                        <ul>
+                                            @foreach (CATEGORy Item in ListCategories)
+                                            {
+                                                <li><a href="@Url.Action("Index", "Categories", new {id=Item.ID, category=Item.URL_SLUG })"><span>-</span>@Item.NAME</a></li>
+                                            }
+                                        </ul>
+                                    </li>
+                                    <li class='@((ViewBag.Active=="about")?"current":"")'><a href="@Url.Action("Index", "About")">Nội quy</a></li>
+                                    @if (prin != null)
+                                    {
+                                        <li class='sub-menu @((ViewBag.Active=="manager")?" current":"")'>
+                                            <a href="javascript:{}">Tài khoản</a>
+                                            <ul>
+                                                <li><a href="@Url.Action("Index", "ProfileManager")"><span>-</span>Thông tin tài khoản</a></li>
+                                                @if (prin.ROLE.Equals(ConstanAppkey.MOD()) || prin.ROLE.Equals(ConstanAppkey.ADMIN()))
+                                                {
+                                                    <li><a href="@Url.Action("Index", "UserManager")"><span>-</span>Quản lý người dùng</a></li>
+                                                    <li><a href="@Url.Action("Index", "CategoriesManager")"><span>-</span>Quản lý chủ đề</a></li>
+                                                }
+                                                @if (prin.ROLE.Equals(ConstanAppkey.MOD()) || prin.ROLE.Equals(ConstanAppkey.ADMIN()) || prin.ROLE.Equals(ConstanAppkey.USER()))
+                                                {
+                                                    <li><a href="@Url.Action("Index", "PostManager")"><span>-</span>Quản lý bài viết</a></li>
+                                                }
+                                                @if (prin.ROLE.Equals(ConstanAppkey.ADMIN()))
+                                                {
+                                                    <li><a href="@Url.Action("Edit", "About")"><span>-</span>Nội quy</a></li>
+                                                }
+                                                <li><a href="@Url.Action("Logout", "Login")"><span>-</span>Đăng xuất</a></li>
+                                            </ul>
+                                        </li>
+                                    }
+                                    else
+                                    {
+                                        <li class='@((ViewBag.Active=="login")?"current":"")'><a href="@Url.Action("Index", "Login")">Đăng nhập/ Đăng ký</a></li>
+                                    }
+                                </ul>
+                            </div>
+                        </nav>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

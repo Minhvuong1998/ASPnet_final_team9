@@ -1,0 +1,88 @@
+﻿@using Interconnected.Models.Entity
+@model USER
+@{
+    ViewBag.Title = "Regis";
+    Layout = "~/Views/Shared/Layout.cshtml";
+}
+<div class="page_container">
+    <div class="breadcrumb">
+        <div class="wrap">
+            <div class="container">
+                <a href="@Url.Action("Index", "Home")">Trang chủ</a><span>/</span>
+                Đăng ký người dùng
+            </div>
+        </div>
+    </div>
+    <!--MAIN CONTENT AREA-->
+    <div class="wrap">
+        <div class="container inner_content">
+            <div class="row">
+                <div class="span8">
+                    @if (@ViewBag.message_er != "" && @ViewBag.message_er != null)
+                    {
+                        <div class="alert alert-error" style="text-align: center">
+                            <a class="close" data-dismiss="alert">×</a>
+                            @ViewBag.message_er.
+                        </div>
+                    }
+                    <form action="" method="post" class="form-horizontal" enctype="multipart/form-data">
+                        @Html.AntiForgeryToken()
+                        <fieldset>
+                            <legend>Đăng ký thành viên mới</legend>
+                            <div class="control-group">
+                                <label class="control-label" for="EMAIL">Email</label>
+                                <div class="controls">
+                                    <input style="padding: 4px 0px;" name="EMAIL" class="input-xlarge focused" id="EMAIL" type="email" value="">
+                                </div>
+                            </div>
+                            <div class="control-group">
+                                <label class="control-label" for="PASSWORD">Pasword</label>
+                                <div class="controls">
+                                    <input style="padding: 4px 0px;" name="PASSWORD" class="input-xlarge focused" id="PASSWORD" type="password" value="">
+                                </div>
+                            </div>
+                            <div class="control-group">
+                                <label class="control-label" for="FULLNAME">Fullname</label>
+                                <div class="controls">
+                                    <input style="padding: 4px 0px;" name="FULLNAME" class="input-xlarge" id="FULLNAME" type="text" value="">
+                                </div>
+                            </div>
+                            <div class="control-group">
+                                <label class="control-label" for="PICTURE">Picture</label>
+                                <div class="controls">
+                                    <input style="padding: 4px 0px;" class="input-xlarge" id="PICTURE" type="file" name="PICTURE">
+                                </div>
+                            </div>
+                            <div class="control-group">
+                                <label class="control-label" for="PHONE">Phone</label>
+                                <div class="controls">
+                                    <input style="padding: 4px 0px;" name="PHONE" class="input-xlarge" id="PHONE" type="text" value="">
+                                </div>
+                            </div>
+                            <div class="control-group">
+                                <label class="control-label" for="ADDRESS">Address</label>
+                                <div class="controls">
+                                    <input style="padding: 4px 0px;" name="ADDRESS" class="input-xlarge" id="ADDRESS" type="text" value="">
+                                </div>
+                            </div>
+                            <div class="form-actions">
+                                <button type="submit" class="btn send_btn">Regis</button>
+                                <button type="reset" class="btn dark_btn">Reset</button>
+                            </div>
+                        </fieldset>
+                    </form>
+                </div>
+
+                <div class="span4">
+                    <h3>Đăng ký thành viên</h3>
+                    <p>Điền đúng địa chỉ email</p>
+                    <p>Passwword, email trường bắt buộc</p>
+                    <p>Nên điền đầy đủ thông tin</p>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!--/MAIN CONTENT AREA-->
+
+</div>
+
